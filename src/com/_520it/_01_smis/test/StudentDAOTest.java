@@ -16,14 +16,14 @@ public class StudentDAOTest {
 	public void testSave() {
 		Student stu = new Student();
 		stu.setAge(19);
-		stu.setName("ÅËÄÁÔ¶");
+		stu.setName("select * from t_student");
 		int count = studentDao.save(stu);
 		System.out.println(count);
 	}
 
 	@Test
 	public void testDelete() {
-		int ret = studentDao.delete((long) 2);
+		int ret = studentDao.delete((long) 10);
 		System.out.println(ret);
 	}
 
@@ -31,7 +31,7 @@ public class StudentDAOTest {
 	public void testUpdate() {
 		Student stu = new Student();
 		stu.setAge(19);
-		stu.setName("ÅËË§¸ç");
+		stu.setName("ÅËË§¸çppp");
 		int count = studentDao.update((long) 3,stu);
 		System.out.println(count);
 	}

@@ -42,16 +42,17 @@ public class StudentDAOImpl implements IStudentDAO {
 		sb.append(id);
 		System.out.println(sb);
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement pst = null;
 		int count = 0;
 		try {
 			conn = JdbcUtil.getConn();
-			st = conn.createStatement();
-			count = st.executeUpdate(sb.toString());
+			pst = conn.prepareStatement(sql);
+			pst.setLong(1, id);
+			count = pst.executeUpdate(sb.toString());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			JdbcUtil.close(conn,st,null);
+			JdbcUtil.close(conn,pst,null);
 		}
 		
 		return count;
@@ -61,25 +62,20 @@ public class StudentDAOImpl implements IStudentDAO {
 	@Override
 	public int update(Long id, Student newStu) {
 		String sql = "update t_student set age=?,name=? where id=?";
-		StringBuilder sb = new StringBuilder();
-		sb.append("update t_student set age=");
-		sb.append(newStu.getAge());
-		sb.append(",name='");
-		sb.append(newStu.getName());
-		sb.append("' where id=");
-		sb.append(id);
-		System.out.println(sb);
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement pst = null;
 		int count = 0;
 		try {
 			conn = JdbcUtil.getConn();
-			st = conn.createStatement();
-			count = st.executeUpdate(sb.toString());
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, newStu.getAge());
+			pst.setString(2, newStu.getName());
+			pst.setLong(3, id);
+			count = pst.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			JdbcUtil.close(conn,st,null);
+			JdbcUtil.close(conn,pst,null);
 		}
 		
 		return count;
@@ -88,27 +84,26 @@ public class StudentDAOImpl implements IStudentDAO {
 
 	@Override
 	public Student get(Long id) {
-		String sql = "select * from t_student where id = "+id;
+		String sql = "select * from t_student where id=?";
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
 			conn = JdbcUtil.getConn();
-			st = conn.createStatement();
-			rs = st.executeQuery(sql);
+			pst = conn.prepareStatement(sql);
+			pst.setLong(1,id);
+			rs = pst.executeQuery();
 			if(rs.next()) {
 			    Student stu = new Student();
 			    stu.setId(rs.getLong("id"));
 			    stu.setAge(rs.getInt("age"));
 			    stu.setName(rs.getString("name"));
 			    return stu;
-			}
-			
-			
+			}	
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			JdbcUtil.close(conn,st,rs);
+			JdbcUtil.close(conn,pst,rs);
 		}
 		return null;
 	}
