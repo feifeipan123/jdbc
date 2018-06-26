@@ -16,7 +16,7 @@ public class StudentDAOTest {
 	public void testSave() {
 		Student stu = new Student();
 		stu.setAge(19);
-		stu.setName("select * from t_student");
+		stu.setName("pppp");
 		int count = studentDao.save(stu);
 		System.out.println(count);
 	}
