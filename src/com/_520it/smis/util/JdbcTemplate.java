@@ -43,8 +43,7 @@ public class JdbcTemplate {
 	 * @param Object[] 参数列表
 	 * @return List
 	 */
-	public static List query(String sql,IResultSetHandler rsh,Object ...params){
-		List list = new ArrayList();
+	public static <T>T query(String sql,IResultSetHandler<T> rsh,Object ...params){
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -55,13 +54,13 @@ public class JdbcTemplate {
 				ps.setObject(i+1, params[i]);
 			}
 			rs = ps.executeQuery();
-			list = rsh.handle(rs);
+			return rsh.handle(rs);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 			JdbcUtil.close(conn,ps,rs);
 		}
-		return list;
+		return null;
 		
 	}
 }

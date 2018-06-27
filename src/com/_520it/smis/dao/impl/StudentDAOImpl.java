@@ -10,6 +10,8 @@ import java.util.List;
 
 import com._520it.smis.dao.IStudentDAO;
 import com._520it.smis.domain.Student;
+import com._520it.smis.handler.BeanHandler;
+import com._520it.smis.handler.BeanListHandler;
 import com._520it.smis.handler.IResultSetHandler;
 import com._520it.smis.util.JdbcTemplate;
 import com._520it.smis.util.JdbcUtil;
@@ -37,21 +39,22 @@ public class StudentDAOImpl implements IStudentDAO {
 	@Override
 	public Student get(Long id) {
 		String sql = "select * from t_student where id=?";
-		List<Student> list = JdbcTemplate.query(sql,new StudentResultSetHandler(),id);
-		return list.size()==1?list.get(0):null;
+		return JdbcTemplate.query(sql,new BeanHandler<Student>(Student.class),id);
 	}
 
 	@Override
 	public List<Student> listAll() {
 		String sql = "select * from t_student";
-		return JdbcTemplate.query(sql,new StudentResultSetHandler());
+		return JdbcTemplate.query(sql,new BeanListHandler<Student>(Student.class));
 	}
 }
-class StudentResultSetHandler implements IResultSetHandler{
+
+//以下代码可以不要，留着复习
+class StudentResultSetHandler implements IResultSetHandler<List<Student>>{
 
 	@Override
-	public List handle(ResultSet rs) {
-		List list = new ArrayList();
+	public List<Student> handle(ResultSet rs) {
+		List<Student> list = new ArrayList<Student>();
 		try {
 			while(rs.next()) {
 				Student stu = new Student();
@@ -65,5 +68,4 @@ class StudentResultSetHandler implements IResultSetHandler{
 		}
 		return list;
 	}
-	
 }
