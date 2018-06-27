@@ -1,21 +1,26 @@
-package com._520it._01_smis.util;
+package com._520it.smis.util;
 
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+
 public class JdbcUtil {
-	private static Properties p = new Properties();
+	private static DataSource ds = null;
 	static {
 		try {
+			Properties p = new Properties();
 			InputStream inStream = Thread.currentThread().getContextClassLoader()
 					.getResourceAsStream("db.properties");
 			p.load(inStream);
-			System.out.println(p);
-			Class.forName(p.getProperty("driverClassName"));
+			ds = DruidDataSourceFactory.createDataSource(p);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -23,8 +28,8 @@ public class JdbcUtil {
 	
 	public static Connection getConn() {
 		try {
-			return DriverManager.getConnection(p.getProperty("url"),p.getProperty("username"),p.getProperty("password"));
-		}catch(Exception e) {
+			return ds.getConnection();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

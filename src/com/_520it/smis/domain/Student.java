@@ -1,4 +1,4 @@
-package com._520it._01_smis.domain;
+package com._520it.smis.domain;
 
 public class Student {
       private Long id;

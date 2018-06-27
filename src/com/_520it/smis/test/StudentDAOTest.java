@@ -1,13 +1,13 @@
-package com._520it._01_smis.test;
+package com._520it.smis.test;
 
 
 import java.util.List;
 
 import org.junit.Test;
 
-import com._520it._01_smis.dao.IStudentDAO;
-import com._520it._01_smis.dao.impl.StudentDAOImpl;
-import com._520it._01_smis.domain.Student;
+import com._520it.smis.dao.IStudentDAO;
+import com._520it.smis.dao.impl.StudentDAOImpl;
+import com._520it.smis.domain.Student;
 
 public class StudentDAOTest {
 	private IStudentDAO studentDao = new StudentDAOImpl();
@@ -38,7 +38,7 @@ public class StudentDAOTest {
 
 	@Test
 	public void testGet() {
-		 Student stu= studentDao.get((long) 3);
+		 Student stu= studentDao.get(3L);
 		 System.out.println(stu);
 	}
 

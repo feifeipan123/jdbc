@@ -1,8 +1,8 @@
-package com._520it._01_smis.dao;
+package com._520it.smis.dao;
 
 import java.util.List;
 
-import com._520it._01_smis.domain.Student;
+import com._520it.smis.domain.Student;
 
 public interface IStudentDAO {
 	/**
